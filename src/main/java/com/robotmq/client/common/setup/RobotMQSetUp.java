@@ -4,6 +4,7 @@ import com.robotmq.client.annotation.RobotMQConnection;
 import com.robotmq.client.annotation.RobotMQListener;
 import com.robotmq.client.common.CommonVars;
 import com.robotmq.client.common.RobotMQConnectionParams;
+import com.robotmq.client.common.produce.RobotMQTemplate;
 import com.robotmq.client.exception.RobotMQConnectionParametersNotFoundException;
 import com.robotmq.client.exception.RobotMQException;
 import com.robotmq.client.exception.RobotMQNotFoundWillConsumeTopicsException;
@@ -30,11 +31,17 @@ public class RobotMQSetUp {
     @Autowired
     private ApplicationContext context;
 
-    public void setUp(){
+    @Autowired
+    private RobotMQProducer producer;
+
+    public void setUp() {
         try {
             setBasePackageName();
             setUpConnectionParameters();
             setUpWillConsumeTopics();
+
+            producer.produce(CommonVars.WILL_CONSUME_TOPICS);
+
         }catch (RobotMQConnectionParametersNotFoundException e){
             logger.severe(e.getMessage());
             throw e;
@@ -45,7 +52,6 @@ public class RobotMQSetUp {
             logger.severe(e.getMessage());
         }catch (Exception e){
             logger.severe(e.toString());
-            throw e;
         }
     }
 
