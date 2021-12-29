@@ -13,12 +13,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class CommonVars {
 
 
-    public static String PACKAGE_NAME ;
-    public static Map<String, Set<String>> methodsAndTopicsMap = new ConcurrentHashMap<>();
-    public static List<String> WILL_CONSUME_TOPICS = new LinkedList<>();
+    public static volatile String PACKAGE_NAME ;
+    public static volatile Map<String, Set<String>> methodsAndTopicsMap = new ConcurrentHashMap<>();
+    public static volatile List<String> WILL_CONSUME_TOPICS = new LinkedList<>();
 
-    public static BlockingQueue<String> OUTTA_QUEUE_TO_BROKER = new LinkedBlockingQueue<>();
-    public static Map<String,BlockingQueue<JSONObject>> WILL_INVOKE_QUEUE = new ConcurrentHashMap<>();
+    public static volatile BlockingQueue<String> OUTTA_QUEUE_TO_BROKER = new LinkedBlockingQueue<>();
+    public static volatile Map<String,BlockingQueue<JSONObject>> WILL_INVOKE_QUEUE = new ConcurrentHashMap<>();
 
 
 
