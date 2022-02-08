@@ -34,15 +34,20 @@ public class RobotMQHandlerThread extends Thread {
         try {
             while(true){
                 if (!CommonVars.OUTTA_QUEUE_TO_BROKER.isEmpty()) {
-                    out.println(CommonVars.OUTTA_QUEUE_TO_BROKER.poll()+"\n\r");
-                }
-                out.flush();
+                    if (out != null){
+                        out.println(CommonVars.OUTTA_QUEUE_TO_BROKER.poll()+"\n\r");
+                        out.flush();
+                    }
 
-                String line = in.readLine();
-                if (line != null) {
-                    System.out.println(line);
                 }
 
+                if (in != null){
+                    String line = in.readLine();
+                    if (line != null) {
+                        System.out.println(line);
+                        CommonVars.WILL_INVOKE_QUEUE.put(line);
+                    }
+                }
 
             }
         } catch (SocketTimeoutException e){
@@ -51,7 +56,7 @@ public class RobotMQHandlerThread extends Thread {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        }catch (IOException e) {
+        }catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally{
             if(socket != null){

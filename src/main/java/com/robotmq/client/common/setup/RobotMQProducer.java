@@ -26,7 +26,7 @@ public class RobotMQProducer {
     protected void produce(List<String> topics) throws InterruptedException {
         String  topicsJsonArrayStr = new JSONArray(topics).toString();
         JSONObject collect = new JSONObject();
-        collect.put("type","consume-request");
+        collect.put("type","send-topics-request");
         collect.put("topics",topicsJsonArrayStr);
 
         CommonVars.OUTTA_QUEUE_TO_BROKER.put(collect.toString());
