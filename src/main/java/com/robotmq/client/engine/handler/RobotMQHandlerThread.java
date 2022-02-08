@@ -1,6 +1,7 @@
 package com.robotmq.client.engine.handler;
 
 import com.robotmq.client.common.CommonVars;
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class RobotMQHandlerThread extends Thread {
 
                 if (in != null){
                     String line = in.readLine();
-                    if (line != null) {
+                    if (StringUtils.hasText(line)) {
                         System.out.println(line);
                         CommonVars.WILL_INVOKE_QUEUE.put(line);
                     }
