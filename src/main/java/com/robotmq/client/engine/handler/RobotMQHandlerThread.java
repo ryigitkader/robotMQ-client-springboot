@@ -26,7 +26,7 @@ public class RobotMQHandlerThread extends Thread {
         PrintWriter out = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()),512);
             out = new PrintWriter(socket.getOutputStream(),true);
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,10 +39,10 @@ public class RobotMQHandlerThread extends Thread {
                         out.println(CommonVars.OUTTA_QUEUE_TO_BROKER.poll()+"\n\r");
                         out.flush();
                     }
-
                 }
 
-                if (in != null){
+
+                if (in != null && in.ready()){
                     String line = in.readLine();
                     if (StringUtils.hasText(line)) {
                         System.out.println(line);
