@@ -26,7 +26,7 @@ public class RobotMQHandlerThread extends Thread {
         PrintWriter out = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()),512);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(),true);
         } catch (IOException e) {
             e.printStackTrace();
