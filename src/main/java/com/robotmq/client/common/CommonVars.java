@@ -18,7 +18,7 @@ public class CommonVars {
     public static volatile List<String> WILL_CONSUME_TOPICS = new LinkedList<>();
 
     public static volatile BlockingQueue<String> OUTTA_QUEUE_TO_BROKER = new LinkedBlockingQueue<>();
-    public static volatile Map<String,BlockingQueue<JSONObject>> WILL_INVOKE_QUEUE = new ConcurrentHashMap<>();
+    public static volatile BlockingQueue<String> WILL_INVOKE_QUEUE = new LinkedBlockingQueue<>();
 
 
 

@@ -1,6 +1,7 @@
 package com.robotmq.client.engine.handler;
 
 import com.robotmq.client.common.CommonVars;
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class RobotMQHandlerThread extends Thread {
         PrintWriter out = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()),512);
             out = new PrintWriter(socket.getOutputStream(),true);
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,15 +35,20 @@ public class RobotMQHandlerThread extends Thread {
         try {
             while(true){
                 if (!CommonVars.OUTTA_QUEUE_TO_BROKER.isEmpty()) {
-                    out.println(CommonVars.OUTTA_QUEUE_TO_BROKER.poll()+"\n\r");
-                }
-                out.flush();
-
-                String line = in.readLine();
-                if (line != null) {
-                    System.out.println(line);
+                    if (out != null){
+                        out.println(CommonVars.OUTTA_QUEUE_TO_BROKER.poll()+"\n\r");
+                        out.flush();
+                    }
                 }
 
+
+                if (in != null && in.ready()){
+                    String line = in.readLine();
+                    if (StringUtils.hasText(line)) {
+                        System.out.println(line);
+                        CommonVars.WILL_INVOKE_QUEUE.put(line);
+                    }
+                }
 
             }
         } catch (SocketTimeoutException e){
@@ -51,7 +57,7 @@ public class RobotMQHandlerThread extends Thread {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        }catch (IOException e) {
+        }catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally{
             if(socket != null){
