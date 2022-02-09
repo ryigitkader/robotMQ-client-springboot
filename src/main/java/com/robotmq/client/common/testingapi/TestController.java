@@ -1,9 +1,9 @@
-package com.robotmq.client.common.setup;
+package com.robotmq.client.common.testingapi;
 
+import com.robotmq.client.common.setup.RobotMQProducer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +15,12 @@ import java.io.IOException;
 @RequestMapping("/")
 public class TestController {
 
-    @Autowired
-    private RobotMQProducer producer;
+    private final RobotMQProducer producer = RobotMQProducer.getINSTANCE();
 
     @PostMapping
     public String produce(@RequestBody Body body) throws InterruptedException, IOException {
         producer.produce(body.getTopic(),body.getData());
-        return "Sended";
+        return "Produced";
     }
 }
 

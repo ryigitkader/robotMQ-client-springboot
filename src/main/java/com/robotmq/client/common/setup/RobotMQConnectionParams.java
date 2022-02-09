@@ -1,7 +1,10 @@
-package com.robotmq.client.common;
+package com.robotmq.client.common.setup;
 
 import org.springframework.util.StringUtils;
 
+/**
+ * @author yigitkader
+ */
 public class RobotMQConnectionParams {
 
     public static String HOST ;

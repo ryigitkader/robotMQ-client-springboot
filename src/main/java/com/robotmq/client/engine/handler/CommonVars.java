@@ -1,6 +1,4 @@
-package com.robotmq.client.common;
-
-import org.json.JSONObject;
+package com.robotmq.client.engine.handler;
 
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -11,6 +9,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * @author yigitkader
+ *
+ * @implNote DO NOT MODIFY HERE
+ */
 public class CommonVars {
 
 

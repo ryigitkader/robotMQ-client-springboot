@@ -1,14 +1,7 @@
 package com.robotmq.client.engine.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.robotmq.client.common.CommonVars;
-import com.robotmq.client.common.produce.RobotMQInvoker;
-import com.robotmq.client.common.setup.RobotMQSetUp;
-import com.robotmq.client.engine.handler.vo.TopicDataVO;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
@@ -29,7 +22,7 @@ public class RobotMQHandlerThread extends Thread {
     private PrintWriter out = null;
 
 
-    private RobotMQInvoker robotMQInvoker = new RobotMQInvoker();
+    private RobotMQInvoker robotMQInvoker = RobotMQInvoker.getINSTANCE();
 
     public RobotMQHandlerThread(Socket socket) throws IOException {
         this.socket = socket;
@@ -38,8 +31,6 @@ public class RobotMQHandlerThread extends Thread {
 
     @Override
     public void run() {
-
-
 
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -50,6 +41,8 @@ public class RobotMQHandlerThread extends Thread {
 
         try {
             while(true){
+
+                /// Outstream Process
                 if (!CommonVars.OUTTA_QUEUE_TO_BROKER.isEmpty()) {
                     if (out != null){
                         CommonVars.OUTTA_QUEUE_TO_BROKER.forEach(o -> {
@@ -60,6 +53,7 @@ public class RobotMQHandlerThread extends Thread {
                 }
 
 
+                //Instream Process
                 if (in != null && in.ready()){
                     String line = in.readLine();
                     if (StringUtils.hasText(line)) {

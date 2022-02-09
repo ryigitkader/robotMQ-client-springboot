@@ -2,16 +2,13 @@ package com.robotmq.client.common.setup;
 
 import com.robotmq.client.annotation.RobotMQConnection;
 import com.robotmq.client.annotation.RobotMQListener;
-import com.robotmq.client.common.CommonVars;
-import com.robotmq.client.common.RobotMQConnectionParams;
-import com.robotmq.client.common.produce.RobotMQTemplate;
+import com.robotmq.client.engine.handler.CommonVars;
 import com.robotmq.client.exception.RobotMQConnectionParametersNotFoundException;
 import com.robotmq.client.exception.RobotMQException;
 import com.robotmq.client.exception.RobotMQNotFoundWillConsumeTopicsException;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -22,17 +19,21 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+
+/**
+ * @author yigitkader
+ */
 @Component
-@Qualifier("robotMQSetup")
 public class RobotMQSetUp {
 
-    Logger logger = Logger.getLogger(RobotMQSetUp.class.getName());
+    private static RobotMQSetUp INSTANCE =  new RobotMQSetUp();
+    private final Logger logger = Logger.getLogger(RobotMQSetUp.class.getName());
 
     @Autowired
     private ApplicationContext context;
 
-    @Autowired
-    private RobotMQProducer producer;
+
+    private final RobotMQProducer producer = RobotMQProducer.getINSTANCE();
 
     public void setUp() {
         try {

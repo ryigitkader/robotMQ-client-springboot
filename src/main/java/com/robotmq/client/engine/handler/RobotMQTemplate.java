@@ -1,7 +1,6 @@
-package com.robotmq.client.common.produce;
+package com.robotmq.client.engine.handler;
 
 import com.robotmq.client.common.setup.RobotMQProducer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -9,8 +8,7 @@ import java.io.IOException;
 @Component
 public class RobotMQTemplate {
 
-    @Autowired
-    private RobotMQProducer robotMQProducer;
+    private final RobotMQProducer robotMQProducer = RobotMQProducer.getINSTANCE();
 
     public void produce(String topic,Object data) throws InterruptedException, IOException {
         robotMQProducer.produce(topic,data);
