@@ -1,5 +1,8 @@
 package com.robotmq.client.common.setup;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.robotmq.client.common.CommonVars;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,13 +16,12 @@ public class RobotMQProducer {
 
     // TODO: 24.12.2021 will be add controls for security
 
-    public void produce(String topic,Object data) throws InterruptedException {
+    public void produce(String topic,Object data) throws InterruptedException, JsonProcessingException {
         JSONObject collect = new JSONObject();
-        String dataJsonStr = new JSONObject(data).toString();
+        String jsonData = convertObjectToJsonString(data);
         collect.put("type","produce-request");
         collect.put("topic",topic);
-        collect.put("data",dataJsonStr);
-
+        collect.put("data",jsonData);
         CommonVars.OUTTA_QUEUE_TO_BROKER.put(collect.toString());
     }
 
@@ -30,5 +32,10 @@ public class RobotMQProducer {
         collect.put("topics",topicsJsonArrayStr);
 
         CommonVars.OUTTA_QUEUE_TO_BROKER.put(collect.toString());
+    }
+
+    private String convertObjectToJsonString(Object obj) throws JsonProcessingException {
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        return ow.writeValueAsString(obj);
     }
 }

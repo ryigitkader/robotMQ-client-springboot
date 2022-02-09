@@ -109,7 +109,7 @@ public class RobotMQSetUp {
                 RobotMQListener notation = o.getAnnotation(RobotMQListener.class);
                 final Set<String> setList = Arrays.stream(notation.topics()).collect(Collectors.toSet());
 
-                CommonVars.methodsAndTopicsMap.put(methodName,setList);
+                CommonVars.methodsAndTopicsMap.put(o,setList);
                 CommonVars.WILL_CONSUME_TOPICS.addAll(setList);
             });
         }catch (Exception e){

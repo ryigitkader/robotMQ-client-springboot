@@ -1,18 +1,35 @@
 package com.robotmq.client.engine.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.robotmq.client.common.CommonVars;
+import com.robotmq.client.common.produce.RobotMQInvoker;
+import com.robotmq.client.common.setup.RobotMQSetUp;
+import com.robotmq.client.engine.handler.vo.TopicDataVO;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.logging.Logger;
 
 public class RobotMQHandlerThread extends Thread {
 
-    Socket socket;
+    Logger logger = Logger.getLogger(RobotMQHandlerThread.class.getName());
+
+    private Socket socket;
+    private BufferedReader in = null;
+    private PrintWriter out = null;
+
+
+    private RobotMQInvoker robotMQInvoker = new RobotMQInvoker();
 
     public RobotMQHandlerThread(Socket socket) throws IOException {
         this.socket = socket;
@@ -22,8 +39,7 @@ public class RobotMQHandlerThread extends Thread {
     @Override
     public void run() {
 
-        BufferedReader in = null;
-        PrintWriter out = null;
+
 
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -36,8 +52,10 @@ public class RobotMQHandlerThread extends Thread {
             while(true){
                 if (!CommonVars.OUTTA_QUEUE_TO_BROKER.isEmpty()) {
                     if (out != null){
-                        out.println(CommonVars.OUTTA_QUEUE_TO_BROKER.poll()+"\n\r");
-                        out.flush();
+                        CommonVars.OUTTA_QUEUE_TO_BROKER.forEach(o -> {
+                            out.println(CommonVars.OUTTA_QUEUE_TO_BROKER.poll()+"\n\r");
+                            out.flush();
+                        });
                     }
                 }
 
@@ -48,6 +66,38 @@ public class RobotMQHandlerThread extends Thread {
                         System.out.println(line);
                         CommonVars.WILL_INVOKE_QUEUE.put(line);
                     }
+                }
+
+               if(!CommonVars.WILL_INVOKE_QUEUE.isEmpty()){
+                    CommonVars.WILL_INVOKE_QUEUE.forEach(o -> {
+                        JSONObject jsonObject = new JSONObject(o);
+                        String topic = jsonObject.getString("topic");
+                        String data = jsonObject.getString("data");
+                        CommonVars.methodsAndTopicsMap.entrySet().forEach( t -> {
+                            if(t.getValue().contains(topic)){
+                                try {
+                                    robotMQInvoker.invokeMethod(t.getKey(),data);
+                                } catch (JsonProcessingException e) {
+                                    e.printStackTrace();
+                                } catch (InvocationTargetException e) {
+                                    e.printStackTrace();
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                } catch (NoSuchMethodException e) {
+                                    e.printStackTrace();
+                                } catch (InstantiationException e) {
+                                    e.printStackTrace();
+                                } catch (ClassNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                                logger.info("Method : "+t.getKey()+" invoked ,  Topic : "+topic+" , Data : "+data);
+                                CommonVars.WILL_INVOKE_QUEUE.removeIf(x -> x.equals(o));
+                            }
+                        });
+
+
+                        //robotMQInvoker.invokeMethod();
+                    });
                 }
 
             }
