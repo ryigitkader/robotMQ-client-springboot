@@ -16,7 +16,7 @@ import java.util.Optional;
 public class RobotMQInvoker {
 
     public synchronized void invokeMethod(Method method,String data) throws JsonProcessingException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, ClassNotFoundException {
-        Class<?> clazz = Arrays.stream(method.getParameterTypes()).findFirst().orElseThrow(() -> new IllegalArgumentException());
+        Class<?> clazz = Arrays.stream(method.getParameterTypes()).findFirst().orElseThrow(IllegalArgumentException::new);
         Class<?> c = Class.forName(method.getDeclaringClass().getName());
         Object obj = convertStringToObject(data,clazz);
         method.invoke(c.getConstructor().newInstance(),obj);
