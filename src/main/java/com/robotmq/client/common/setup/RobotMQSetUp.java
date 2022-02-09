@@ -2,7 +2,7 @@ package com.robotmq.client.common.setup;
 
 import com.robotmq.client.annotation.RobotMQConnection;
 import com.robotmq.client.annotation.RobotMQListener;
-import com.robotmq.client.engine.handler.CommonVars;
+import com.robotmq.client.handler.CommonVars;
 import com.robotmq.client.exception.RobotMQConnectionParametersNotFoundException;
 import com.robotmq.client.exception.RobotMQException;
 import com.robotmq.client.exception.RobotMQNotFoundWillConsumeTopicsException;

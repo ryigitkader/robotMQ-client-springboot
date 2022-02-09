@@ -3,7 +3,7 @@ package com.robotmq.client.common.setup;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.robotmq.client.engine.handler.CommonVars;
+import com.robotmq.client.handler.CommonVars;
 import com.robotmq.client.common.constants.RobotMqClientConstants;
 import org.json.JSONArray;
 import org.json.JSONObject;

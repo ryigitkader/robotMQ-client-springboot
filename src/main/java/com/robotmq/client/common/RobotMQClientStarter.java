@@ -1,8 +1,8 @@
 package com.robotmq.client.common;
 
 import com.robotmq.client.common.setup.RobotMQSetUp;
-import com.robotmq.client.engine.handler.CommonVars;
-import com.robotmq.client.engine.handler.Handler;
+import com.robotmq.client.handler.CommonVars;
+import com.robotmq.client.handler.Handler;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
