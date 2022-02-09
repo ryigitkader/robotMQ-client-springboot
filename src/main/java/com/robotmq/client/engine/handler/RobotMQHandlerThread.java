@@ -87,6 +87,8 @@ public class RobotMQHandlerThread extends Thread {
                                     e.printStackTrace();
                                 } catch (InstantiationException e) {
                                     e.printStackTrace();
+                                } catch (ClassNotFoundException e) {
+                                    e.printStackTrace();
                                 }
                                 logger.info("Method : "+t.getKey()+" invoked ,  Topic : "+topic+" , Data : "+data);
                                 CommonVars.WILL_INVOKE_QUEUE.removeIf(x -> x.equals(o));

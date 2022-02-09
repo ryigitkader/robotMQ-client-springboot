@@ -5,6 +5,7 @@ import com.robotmq.client.annotation.RobotMQListener;
 
 public class ForTestConnection {
 
+    public ForTestConnection(){}
 
     @RobotMQConnection(url = "localhost",port = "9988")
     void connection(){}

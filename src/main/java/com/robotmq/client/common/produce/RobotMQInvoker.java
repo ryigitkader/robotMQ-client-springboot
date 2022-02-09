@@ -15,11 +15,12 @@ import java.util.Optional;
 @Component
 public class RobotMQInvoker {
 
-    public synchronized void invokeMethod(Method method,String data) throws JsonProcessingException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+    public synchronized void invokeMethod(Method method,String data) throws JsonProcessingException, InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, ClassNotFoundException {
         Class<?> clazz = Arrays.stream(method.getParameterTypes()).findFirst().orElseThrow(() -> new IllegalArgumentException());
+        Class<?> c = Class.forName(method.getDeclaringClass().getName());
         Object obj = convertStringToObject(data,clazz);
-        Reflections reflections = new Reflections(CommonVars.PACKAGE_NAME, clazz);
-        //method.invoke(clazz.getConstructor().newInstance(),obj);
+        method.invoke(c.getConstructor().newInstance(),obj);
+
     }
 
 
