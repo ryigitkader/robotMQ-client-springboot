@@ -31,3 +31,4 @@ class Body{
     private String topic;
     private String data;
 }
+

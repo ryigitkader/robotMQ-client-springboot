@@ -6,6 +6,9 @@ import com.robotmq.client.engine.handler.CommonVars;
 import com.robotmq.client.exception.RobotMQConnectionParametersNotFoundException;
 import com.robotmq.client.exception.RobotMQException;
 import com.robotmq.client.exception.RobotMQNotFoundWillConsumeTopicsException;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,15 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class Person{
+    private int id;
+    private String name;
+}
 
 
 /**
@@ -45,6 +57,11 @@ public class RobotMQSetUp {
             producer.produce("tekTopic","TekTopicDataa");
             producer.produce("topic1","Topic1 Dataa");
             producer.produce("xxxxx","TekTopicDataa");
+
+            Person p =  new Person(1,"Yigit");
+            producer.produce("topic1",p);
+
+
 
         }catch (RobotMQConnectionParametersNotFoundException e){
             logger.severe(e.getMessage());
