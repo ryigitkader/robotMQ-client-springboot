@@ -10,12 +10,12 @@ public class ForTestConnection {
     void connection(){}
 
     @RobotMQListener(topics = "tekTopic")
-    void testForConsume1(Object x){
-
+    public void testForConsume1(String x){
+        System.out.println("testForConsume1 : "+x);
     }
 
     @RobotMQListener(topics = {"topic1","topicyeni"})
-    void testForConsume2(Object x){
-
+    public void testForConsume2(Object x){
+        System.out.println("testForConsume2 : "+x);
     }
 }
