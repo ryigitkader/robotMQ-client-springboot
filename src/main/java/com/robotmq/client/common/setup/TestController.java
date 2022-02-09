@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/")
 public class TestController {
@@ -17,7 +19,7 @@ public class TestController {
     private RobotMQProducer producer;
 
     @PostMapping
-    public String produce(@RequestBody Body body) throws InterruptedException {
+    public String produce(@RequestBody Body body) throws InterruptedException, IOException {
         producer.produce(body.getTopic(),body.getData());
         return "Sended";
     }
