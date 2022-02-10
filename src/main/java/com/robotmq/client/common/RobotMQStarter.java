@@ -16,9 +16,6 @@ import java.util.UUID;
 @Component
 public class RobotMQStarter {
 
-    /*@Autowired
-    private ApplicationContext context;*/
-
     private RobotMQSetUp robotMQSetUp = RobotMQSetUp.getINSTANCE();
     private RobotMQHandler handler = RobotMQHandler.getINSTANCE();
 
@@ -31,21 +28,15 @@ public class RobotMQStarter {
             CommonVars.PACKAGE_NAME= basePackage;
             robotMQSetUp.setUp();
             handler.handler();
-
-        ///Test Variables
-        System.out.println("Base package : "+ CommonVars.PACKAGE_NAME );
-        System.out.println("Methods and topics : "+CommonVars.methodsAndTopicsMap );
-        System.out.println("Will consume topics: "+CommonVars.WILL_CONSUME_TOPICS );
-
     }
 
 
     @Scheduled(fixedRate = 1000)
     private void timingProduce() throws InterruptedException, JsonProcessingException {
         RobotMQProducer producer = RobotMQProducer.getINSTANCE();
-        //producer.produce("topic1", UUID.randomUUID().toString());
-        //producer.produce("topic2", UUID.randomUUID().toString());
-        //producer.produce("topic3", p);
+        producer.produce("topic1", UUID.randomUUID().toString());
+        producer.produce("topic2", UUID.randomUUID().toString());
+        producer.produce("topic3", p);
         producer.produce("topic4",x);
     }
 }
