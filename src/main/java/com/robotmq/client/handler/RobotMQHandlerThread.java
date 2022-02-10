@@ -1,6 +1,7 @@
 package com.robotmq.client.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.robotmq.client.glob.CommonVars;
 import org.json.JSONObject;
 import org.springframework.util.StringUtils;
 
@@ -35,26 +36,26 @@ public class RobotMQHandlerThread extends Thread {
 
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(),true);
+            out = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            while(true){
+            while (true) {
                 handleOutputStream();
                 handleInputStream();
             }
-        } catch (SocketTimeoutException e){
+        } catch (SocketTimeoutException e) {
             try {
                 socket.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-        }catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-        } finally{
-            if(socket != null){
+        } finally {
+            if (socket != null) {
                 socket = null;
             }
         }
@@ -62,7 +63,7 @@ public class RobotMQHandlerThread extends Thread {
 
 
     private void handleInputStream() throws IOException, InterruptedException {
-        if (in != null && in.ready()){
+        if (in != null && in.ready()) {
             String line = in.readLine();
             if (StringUtils.hasText(line)) {
                 System.out.println(line);
@@ -70,7 +71,7 @@ public class RobotMQHandlerThread extends Thread {
             }
         }
 
-        if(!CommonVars.WILL_INVOKE_QUEUE.isEmpty()){
+        if (!CommonVars.WILL_INVOKE_QUEUE.isEmpty()) {
 
             CommonVars.WILL_INVOKE_QUEUE.forEach(o -> {
                 JSONObject jsonObject = new JSONObject(o);
@@ -94,11 +95,11 @@ public class RobotMQHandlerThread extends Thread {
         }
     }
 
-    private void handleOutputStream(){
+    private void handleOutputStream() {
         if (!CommonVars.OUTTA_QUEUE_TO_BROKER.isEmpty()) {
-            if (out != null){
+            if (out != null) {
                 CommonVars.OUTTA_QUEUE_TO_BROKER.forEach(o -> {
-                    out.println(CommonVars.OUTTA_QUEUE_TO_BROKER.poll()+"\n\r");
+                    out.println(CommonVars.OUTTA_QUEUE_TO_BROKER.poll() + "\n\r");
                     out.flush();
                 });
             }

@@ -1,6 +1,7 @@
 package com.robotmq.client.exception;
 
-public class RobotMQNotFoundWillConsumeTopicsException extends RuntimeException {
+public class RobotMQNotFoundWillConsumeTopicsException extends RuntimeException{
+
 
     public RobotMQNotFoundWillConsumeTopicsException(){
         super();

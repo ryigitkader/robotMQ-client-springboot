@@ -3,9 +3,9 @@ package com.robotmq.client.common.constants;
 /**
  * @author yigitkader
  */
-public class RobotMqClientConstants {
+public class RobotMQConstants {
 
-    private RobotMqClientConstants(){}
+    private RobotMQConstants(){}
 
     public static String PRODUCE_REQUEST = "produce-request";
 

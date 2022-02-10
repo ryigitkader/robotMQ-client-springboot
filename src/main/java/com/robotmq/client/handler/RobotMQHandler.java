@@ -1,19 +1,24 @@
 package com.robotmq.client.handler;
 
+
 import com.robotmq.client.common.setup.RobotMQConnectionParams;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.Socket;
-
 import java.util.logging.Logger;
 
-@Component
 public class RobotMQHandler implements Handler{
+
+    private static RobotMQHandler INSTANCE = new RobotMQHandler();
 
     private Socket client;
     private final Logger logger = Logger.getLogger(RobotMQHandler.class.getName());
 
+    private RobotMQHandler(){}
+
+    public static RobotMQHandler getINSTANCE() {
+        return INSTANCE;
+    }
 
     @Override
     public void handler() {
@@ -29,7 +34,5 @@ public class RobotMQHandler implements Handler{
     private Socket createSocketConnection() throws IOException {
         return new Socket(RobotMQConnectionParams.HOST, Integer.parseInt(RobotMQConnectionParams.PORT));
     }
-
-
 
 }

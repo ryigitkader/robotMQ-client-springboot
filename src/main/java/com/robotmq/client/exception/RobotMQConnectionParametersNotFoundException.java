@@ -13,4 +13,5 @@ public class RobotMQConnectionParametersNotFoundException extends RuntimeExcepti
     public RobotMQConnectionParametersNotFoundException(Throwable e,String message){
         super(message,e);
     }
+
 }

@@ -13,5 +13,4 @@ public class RobotMQException extends RuntimeException{
     public RobotMQException(Throwable e,String message){
         super(message,e);
     }
-
 }
