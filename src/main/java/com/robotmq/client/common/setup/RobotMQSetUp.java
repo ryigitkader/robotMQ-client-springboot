@@ -46,17 +46,6 @@ public class RobotMQSetUp {
             setUpConnectionParameters();
             setUpWillConsumeTopics();
             topicsProducer.produce(CommonVars.WILL_CONSUME_TOPICS);
-
-
-            //producer.produce("tekTopic","TekTopicDataa");
-            //producer.produce("topic1","Topic1 Dataa");
-            //producer.produce("xxxxx","TekTopicDataa");
-
-            //Person p =  new Person(1,"Yigit");
-            //producer.produce("topic1",p);
-
-
-
         }catch (RobotMQConnectionParametersNotFoundException e){
             logger.severe(e.getMessage());
             throw e;

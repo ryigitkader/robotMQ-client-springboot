@@ -2,6 +2,8 @@ package com.robotmq.client.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -29,7 +32,12 @@ public class RobotMQInvoker {
 
         Object obj = null;
         if(!classOfParameter.equals(String.class)){
-             obj = new ObjectMapper().readValue(new JSONObject(data).toString(), classOfParameter);
+            try {
+                obj = new ObjectMapper().readValue(new JSONObject(data).toString(), classOfParameter);
+            }catch (JSONException e){
+                obj = new ObjectMapper().readValue(new JSONArray(data).toString(), classOfParameter);
+            }
+
         }else {
             obj = convertStringToObject(data, classOfParameter);
         }

@@ -9,6 +9,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -21,6 +23,7 @@ public class RobotMQStarter {
     private RobotMQHandler handler = RobotMQHandler.getINSTANCE();
 
     private Person p = new Person(1,"Yigit");
+    private List<Person> x = Arrays.asList(p);
     public void build(String basePackage) throws InterruptedException {
             if (!StringUtils.hasText(basePackage)){
                 throw new InterruptedException();
@@ -40,9 +43,10 @@ public class RobotMQStarter {
     @Scheduled(fixedRate = 1000)
     private void timingProduce() throws InterruptedException, JsonProcessingException {
         RobotMQProducer producer = RobotMQProducer.getINSTANCE();
-        producer.produce("topic1", UUID.randomUUID().toString());
-        producer.produce("topic2", UUID.randomUUID().toString());
-        producer.produce("topic3", p);
+        //producer.produce("topic1", UUID.randomUUID().toString());
+        //producer.produce("topic2", UUID.randomUUID().toString());
+        //producer.produce("topic3", p);
+        producer.produce("topic4",x);
     }
 }
 

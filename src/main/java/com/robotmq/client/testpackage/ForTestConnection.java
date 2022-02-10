@@ -3,6 +3,8 @@ package com.robotmq.client.testpackage;
 import com.robotmq.client.annotation.RobotMQConnection;
 import com.robotmq.client.annotation.RobotMQListener;
 
+import java.util.List;
+
 public class ForTestConnection {
 
     public ForTestConnection(){}
@@ -18,6 +20,12 @@ public class ForTestConnection {
     @RobotMQListener(topics = "topic3")
     public void testForConsume2(Person x){
         Person p = x;
+        System.out.println("testForConsume2 : "+x);
+    }
+
+    @RobotMQListener(topics = "topic4")
+    public void testForConsume2(List<Person> x){
+        List<Person> a = x;
         System.out.println("testForConsume2 : "+x);
     }
 }
