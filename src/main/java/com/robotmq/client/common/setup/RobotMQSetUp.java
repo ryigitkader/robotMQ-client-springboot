@@ -34,7 +34,7 @@ public class RobotMQSetUp {
 
     private RobotMQConsumeTopicsProducer topicsProducer = RobotMQConsumeTopicsProducer.getINSTANCE();
 
-    RobotMQProducer producer = new RobotMQProducer();
+    //RobotMQProducer producer = new RobotMQProducer();
 
 
     private RobotMQSetUp(){}
@@ -51,9 +51,9 @@ public class RobotMQSetUp {
             topicsProducer.produce(CommonVars.WILL_CONSUME_TOPICS);
 
 
-            producer.produce("tekTopic","TekTopicDataa");
-            producer.produce("topic1","Topic1 Dataa");
-            producer.produce("xxxxx","TekTopicDataa");
+            //producer.produce("tekTopic","TekTopicDataa");
+            //producer.produce("topic1","Topic1 Dataa");
+            //producer.produce("xxxxx","TekTopicDataa");
 
             //Person p =  new Person(1,"Yigit");
             //producer.produce("topic1",p);

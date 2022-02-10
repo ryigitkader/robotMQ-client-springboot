@@ -81,6 +81,7 @@ public class RobotMQHandlerThread extends Thread {
                     if (value.contains(topic)) {
                         try {
                             robotMQInvoker.invokeMethod(key, data);
+                            logger.info("Invoked !!!");
                         } catch (JsonProcessingException | InvocationTargetException | IllegalAccessException
                                 | NoSuchMethodException | InstantiationException | ClassNotFoundException e) {
 
