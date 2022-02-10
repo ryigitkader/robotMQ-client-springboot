@@ -78,17 +78,20 @@ public class RobotMQHandlerThread extends Thread {
                 String topic = jsonObject.getString("topic");
                 String data = jsonObject.getString("data");
                 CommonVars.methodsAndTopicsMap.forEach((key, value) -> {
-                    if (value.contains(topic)) {
-                        try {
-                            robotMQInvoker.invokeMethod(key, data);
-                        } catch (JsonProcessingException | InvocationTargetException | IllegalAccessException
-                                | NoSuchMethodException | InstantiationException | ClassNotFoundException e) {
+                    value.forEach( v -> {
+                        if (v.equals(topic)) {
+                            try {
+                                robotMQInvoker.invokeMethod(key, data);
+                                logger.info("Invoked !!!");
+                            } catch (JsonProcessingException | InvocationTargetException | IllegalAccessException
+                                    | NoSuchMethodException | InstantiationException | ClassNotFoundException e) {
 
-                            e.printStackTrace();
+                                e.printStackTrace();
+                            }
+                            logger.info("Method : " + key + " invoked ,  Topic : " + topic + " , Data : " + data);
+                            CommonVars.WILL_INVOKE_QUEUE.removeIf(x -> x.equals(o));
                         }
-                        logger.info("Method : " + key + " invoked ,  Topic : " + topic + " , Data : " + data);
-                        CommonVars.WILL_INVOKE_QUEUE.removeIf(x -> x.equals(o));
-                    }
+                    });
                 });
             });
 

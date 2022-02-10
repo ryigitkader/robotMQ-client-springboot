@@ -16,7 +16,9 @@ public class RobotMQProducer {
 
     // TODO: 24.12.2021 will be add controls for security
 
-    private static RobotMQProducer INSTANCE = new RobotMQProducer();
+    public static RobotMQProducer INSTANCE = new RobotMQProducer();
+
+    private RobotMQProducer(){}
 
     public static RobotMQProducer getINSTANCE() {
         return INSTANCE;
