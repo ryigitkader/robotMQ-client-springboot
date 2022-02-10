@@ -39,6 +39,6 @@ public class RobotMQStarter {
     @Scheduled(fixedRate = 1000)
     private void timingProduce() throws InterruptedException, JsonProcessingException {
         RobotMQProducer producer = RobotMQProducer.getINSTANCE();
-        producer.produce("topic1", UUID.randomUUID().toString());
+        producer.produce("topic2", UUID.randomUUID().toString());
     }
 }

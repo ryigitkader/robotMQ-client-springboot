@@ -14,11 +14,8 @@ import org.reflections.scanners.MethodAnnotationsScanner;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
-import java.util.Set;
-import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -107,8 +104,7 @@ public class RobotMQSetUp {
             methodsAnnotatedWith.forEach(o -> {
                 final String methodName = o.getName();
                 RobotMQListener notation = o.getAnnotation(RobotMQListener.class);
-                final Set<String> setList = Arrays.stream(notation.topics()).collect(Collectors.toSet());
-
+                final Set<String> setList = new HashSet<>(Arrays.asList(notation.topics()[0].split("\\s*,\\s*")));
                 CommonVars.methodsAndTopicsMap.put(o,setList);
                 CommonVars.WILL_CONSUME_TOPICS.addAll(setList);
             });
