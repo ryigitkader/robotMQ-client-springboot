@@ -1,5 +1,6 @@
 package com.robotmq.client.common.setup;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.robotmq.client.annotation.RobotMQConnection;
 import com.robotmq.client.annotation.RobotMQListener;
 import com.robotmq.client.exception.RobotMQConnectionParametersNotFoundException;
@@ -10,12 +11,14 @@ import com.robotmq.client.glob.CommonVars;
 import com.robotmq.client.handler.RobotMQProducer;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -39,6 +42,7 @@ public class RobotMQSetUp {
     public static RobotMQSetUp getINSTANCE() {
         return INSTANCE;
     }
+
 
     public void setUp() {
         try {
