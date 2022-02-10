@@ -1,6 +1,5 @@
-package com.robotmq.client.common;
+package com.robotmq.client.glob;
 
-import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -11,10 +10,15 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * @author yigitkader
+ *
+ * @implNote DO NOT MODIFY HERE
+ */
 public class CommonVars {
 
 
-    public static volatile String PACKAGE_NAME ;
+    public static volatile String PACKAGE_NAME;
     public static volatile Map<Method, Set<String>> methodsAndTopicsMap = new ConcurrentHashMap<>();
     public static volatile List<String> WILL_CONSUME_TOPICS = new LinkedList<>();
 
@@ -22,15 +26,12 @@ public class CommonVars {
     public static volatile BlockingQueue<String> WILL_INVOKE_QUEUE = new LinkedBlockingQueue<>();
 
 
-
     private final static CommonVars INSTANCE = new CommonVars();
 
-    private CommonVars(){}
+    private CommonVars() {
+    }
 
     public static CommonVars getINSTANCE() {
         return INSTANCE;
     }
-
-
-
 }

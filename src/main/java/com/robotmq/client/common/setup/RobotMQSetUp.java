@@ -1,49 +1,64 @@
 package com.robotmq.client.common.setup;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.robotmq.client.annotation.RobotMQConnection;
 import com.robotmq.client.annotation.RobotMQListener;
-import com.robotmq.client.common.CommonVars;
-import com.robotmq.client.common.RobotMQConnectionParams;
-import com.robotmq.client.common.produce.RobotMQTemplate;
 import com.robotmq.client.exception.RobotMQConnectionParametersNotFoundException;
 import com.robotmq.client.exception.RobotMQException;
 import com.robotmq.client.exception.RobotMQNotFoundWillConsumeTopicsException;
+import com.robotmq.client.glob.CommonVars;
+
+import com.robotmq.client.handler.RobotMQProducer;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.scheduling.annotation.Scheduled;
 
-import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@Component
-@Qualifier("robotMQSetup")
+/**
+ * @author yigitkader
+ */
 public class RobotMQSetUp {
 
-    Logger logger = Logger.getLogger(RobotMQSetUp.class.getName());
 
-    @Autowired
-    private ApplicationContext context;
+    private final Logger logger = Logger.getLogger(RobotMQSetUp.class.getName());
 
-    @Autowired
-    private RobotMQProducer producer;
+    private final static RobotMQSetUp INSTANCE = new RobotMQSetUp();
+
+    private RobotMQConsumeTopicsProducer topicsProducer = RobotMQConsumeTopicsProducer.getINSTANCE();
+
+    RobotMQProducer producer = new RobotMQProducer();
+
+
+    private RobotMQSetUp(){}
+
+    public static RobotMQSetUp getINSTANCE() {
+        return INSTANCE;
+    }
+
 
     public void setUp() {
         try {
-            setBasePackageName();
             setUpConnectionParameters();
             setUpWillConsumeTopics();
+            topicsProducer.produce(CommonVars.WILL_CONSUME_TOPICS);
 
-            producer.produce(CommonVars.WILL_CONSUME_TOPICS);
+
             producer.produce("tekTopic","TekTopicDataa");
             producer.produce("topic1","Topic1 Dataa");
             producer.produce("xxxxx","TekTopicDataa");
+
+            //Person p =  new Person(1,"Yigit");
+            //producer.produce("topic1",p);
+
+
 
         }catch (RobotMQConnectionParametersNotFoundException e){
             logger.severe(e.getMessage());
@@ -58,21 +73,6 @@ public class RobotMQSetUp {
         }
     }
 
-
-    private void setBasePackageName(){
-        logger.info("[?] Starting To Find Base Package ..");
-        Map<String, Object> annotatedBeans = context.getBeansWithAnnotation(SpringBootApplication.class);
-
-        CommonVars.PACKAGE_NAME = annotatedBeans.isEmpty() ? null : annotatedBeans.values().toArray()[0].getClass().getPackageName();
-
-        if (CommonVars.PACKAGE_NAME==null){
-            logger.warning("[!] Base Package Can Not Found !");
-            CommonVars.PACKAGE_NAME =  MethodHandles.lookup().lookupClass().getPackageName();
-            /// todo : Can be stop here. Not urgent
-        }else {
-            logger.info("[+] Base Package Found !");
-        }
-    }
 
 
     private void setUpConnectionParameters(){
@@ -116,6 +116,24 @@ public class RobotMQSetUp {
             throw new RobotMQNotFoundWillConsumeTopicsException("Couldnt Find Topics For Will Consume");
         }
         logger.info("[+] Found Topics For Consume !");
+    }
+
+
+
+    @Deprecated
+    private void setBasePackageName(){
+    /* logger.info("[?] Starting To Find Base Package ..");
+        Map<String, Object> annotatedBeans = context.getBeansWithAnnotation(SpringBootApplication.class);
+
+        CommonVars.PACKAGE_NAME = annotatedBeans.isEmpty() ? null : annotatedBeans.values().toArray()[0].getClass().getPackageName();
+
+        if (CommonVars.PACKAGE_NAME==null){
+            logger.warning("[!] Base Package Can Not Found !");
+            CommonVars.PACKAGE_NAME =  MethodHandles.lookup().lookupClass().getPackageName();
+            /// todo : Can be stop here. Not urgent
+        }else {
+            logger.info("[+] Base Package Found !");
+        }*/
     }
 
 }
