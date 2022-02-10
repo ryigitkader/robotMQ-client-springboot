@@ -20,6 +20,7 @@ public class RobotMQStarter {
     private RobotMQSetUp robotMQSetUp = RobotMQSetUp.getINSTANCE();
     private RobotMQHandler handler = RobotMQHandler.getINSTANCE();
 
+    private Person p = new Person(1,"Yigit");
     public void build(String basePackage) throws InterruptedException {
             if (!StringUtils.hasText(basePackage)){
                 throw new InterruptedException();
@@ -40,5 +41,33 @@ public class RobotMQStarter {
     private void timingProduce() throws InterruptedException, JsonProcessingException {
         RobotMQProducer producer = RobotMQProducer.getINSTANCE();
         producer.produce("topic2", UUID.randomUUID().toString());
+        producer.produce("topic3", p);
+    }
+}
+
+class Person{
+
+    int id;
+    String name;
+
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

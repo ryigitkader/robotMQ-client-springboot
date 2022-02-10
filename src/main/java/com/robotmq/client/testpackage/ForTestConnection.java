@@ -16,7 +16,39 @@ public class ForTestConnection {
     }
 
     @RobotMQListener(topics = "topic3")
-    public void testForConsume2(Object x){
+    public void testForConsume2(Person x){
+        Person p = x;
         System.out.println("testForConsume2 : "+x);
+    }
+}
+
+
+
+class Person{
+
+    int id;
+    String name;
+
+    public Person(){}
+
+    public Person(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
