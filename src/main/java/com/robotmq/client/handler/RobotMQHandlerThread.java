@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class RobotMQHandlerThread extends Thread {
 
-    Logger logger = Logger.getLogger(RobotMQHandlerThread.class.getName());
+    private final Logger logger = Logger.getLogger(RobotMQHandlerThread.class.getName());
 
     private Socket socket;
     private BufferedReader in = null;
@@ -82,13 +82,10 @@ public class RobotMQHandlerThread extends Thread {
                         if (v.equals(topic)) {
                             try {
                                 robotMQInvoker.invokeMethod(key, data);
-                                logger.info("Invoked !!!");
                             } catch (JsonProcessingException | InvocationTargetException | IllegalAccessException
                                     | NoSuchMethodException | InstantiationException | ClassNotFoundException e) {
-
                                 e.printStackTrace();
                             }
-                            logger.info("Method : " + key + " invoked ,  Topic : " + topic + " , Data : " + data);
                             CommonVars.WILL_INVOKE_QUEUE.removeIf(x -> x.equals(o));
                         }
                     });

@@ -29,9 +29,7 @@ public class RobotMQSetUp {
 
     private final static RobotMQSetUp INSTANCE = new RobotMQSetUp();
 
-    private RobotMQConsumeTopicsProducer topicsProducer = RobotMQConsumeTopicsProducer.getINSTANCE();
-
-    //RobotMQProducer producer = new RobotMQProducer();
+    private final RobotMQConsumeTopicsProducer topicsProducer = RobotMQConsumeTopicsProducer.getINSTANCE();
 
 
     private RobotMQSetUp(){}
@@ -62,8 +60,6 @@ public class RobotMQSetUp {
 
 
     private void setUpConnectionParameters(){
-        logger.info("[?] Starting To Find RobotMQ Connections Paramaters ..");
-
         Reflections ref =new Reflections(CommonVars.PACKAGE_NAME,new MethodAnnotationsScanner());
         Set<Method> methodsAnnotatedWith = Collections.singleton(ref.getMethodsAnnotatedWith(RobotMQConnection.class)
                 .stream()
@@ -79,14 +75,11 @@ public class RobotMQSetUp {
             if (!RobotMQConnectionParams.buildConnectionParameters(url,port) ){
                 throw new RobotMQConnectionParametersNotFoundException("ROBOTMQConnection Can Not Found! Parameters NULL or EMPTY. Please Check Parameters");
             }
-
-            logger.info("[+] RobotMQ Connection Paramaters Built");
         });
     }
 
 
     private void setUpWillConsumeTopics(){
-        logger.info("[+] Starting To Find Topics For Consume ..");
         try {
             Reflections ref =new Reflections(CommonVars.PACKAGE_NAME,new MethodAnnotationsScanner());
             Set<Method> methodsAnnotatedWith = ref.getMethodsAnnotatedWith(RobotMQListener.class);
@@ -100,25 +93,8 @@ public class RobotMQSetUp {
         }catch (Exception e){
             throw new RobotMQNotFoundWillConsumeTopicsException("Couldnt Find Topics For Will Consume");
         }
-        logger.info("[+] Found Topics For Consume !");
     }
 
 
-
-    @Deprecated
-    private void setBasePackageName(){
-    /* logger.info("[?] Starting To Find Base Package ..");
-        Map<String, Object> annotatedBeans = context.getBeansWithAnnotation(SpringBootApplication.class);
-
-        CommonVars.PACKAGE_NAME = annotatedBeans.isEmpty() ? null : annotatedBeans.values().toArray()[0].getClass().getPackageName();
-
-        if (CommonVars.PACKAGE_NAME==null){
-            logger.warning("[!] Base Package Can Not Found !");
-            CommonVars.PACKAGE_NAME =  MethodHandles.lookup().lookupClass().getPackageName();
-            /// todo : Can be stop here. Not urgent
-        }else {
-            logger.info("[+] Base Package Found !");
-        }*/
-    }
 
 }
