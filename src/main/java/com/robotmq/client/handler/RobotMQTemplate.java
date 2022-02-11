@@ -1,7 +1,10 @@
 package com.robotmq.client.handler;
 
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 
+@Component
 public class RobotMQTemplate {
 
     private final RobotMQProducer robotMQProducer = RobotMQProducer.getINSTANCE();
